@@ -6,6 +6,7 @@ import { Exercise } from "./types/exercise";
 
 import ExerciseCard from "./components/ExerciseCard";
 import Navbar from "./components/Navbar";
+import FilterBar from "./components/FilterBar";
 
 const LIMIT = 20;
 
@@ -15,6 +16,8 @@ const HomePage = () => {
   const [error, setError] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [search, setSearch] = useState("");
+  const [selectedMuscle, setSelectedMuscle] = useState("");
 
   const fetchExercises = async () => {
     try {
@@ -40,6 +43,23 @@ const HomePage = () => {
     fetchExercises();
   }, [currentPage]);
 
+  const muscles = [
+    ...new Set(exercise.map((item) => item.muscles[0]?.name_en || "Unknown")),
+  ];
+
+  const filteredExercises = exercise.filter((item) => {
+    const exerciseName = item.translations[0]?.name.toLowerCase() || "";
+
+    const muscle = item.muscles[0]?.name_en || "";
+
+    const matchSearch = exerciseName.includes(search.toLowerCase());
+
+    const matchMuscle =
+      selectedMuscle === "" ? true : muscle === selectedMuscle;
+
+    return matchSearch && matchMuscle;
+  });
+
   if (loading) {
     return <h1 className="text-center text-2xl">Loading...</h1>;
   }
@@ -53,15 +73,25 @@ const HomePage = () => {
   }
 
   return (
-    <main className="max-w">
+    <main className="max-w ">
       <Navbar></Navbar>
-      <h1 className="text-3xl font-bold mb-2 pt-2">Exercise Tracker</h1>
+      <div className="flex items-center justify-between m-3 ">
+        <h1 className="text-3xl font-bold">Exercise Tracker</h1>
+        <FilterBar
+          search={search}
+          setSearch={setSearch}
+          selectedMuscle={selectedMuscle}
+          setSelectedMuscle={setSelectedMuscle}
+          muscles={muscles}
+        />
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mx-3">
-        {exercise.map((item) => (
+        {filteredExercises.map((item) => (
           <ExerciseCard key={item.id} exercise={item} />
         ))}
       </div>
+
       <div className="flex items-center justify-center gap-4 mt-10 pb-2">
         <button
           disabled={currentPage === 1}
@@ -69,14 +99,14 @@ const HomePage = () => {
           className={`px-4 py-2 rounded ${
             currentPage === 1
               ? "bg-gray-300 cursor-not-allowed"
-              : "bg-black text-white"
+              : "bg-blue-900 text-white"
           }`}
         >
           Prev
         </button>
 
         <span className="font-semibold">
-          Page {currentPage} / {totalPages}
+          {currentPage} / {totalPages}
         </span>
 
         <button
@@ -85,7 +115,7 @@ const HomePage = () => {
           className={`px-4 py-2 rounded ${
             currentPage === totalPages
               ? "bg-gray-300 cursor-not-allowed"
-              : "bg-black text-white"
+              : "bg-blue-900 text-white"
           }`}
         >
           Next
