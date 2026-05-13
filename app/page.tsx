@@ -7,8 +7,9 @@ import { Exercise } from "./types/exercise";
 import ExerciseCard from "./components/ExerciseCard";
 import Navbar from "./components/Navbar";
 import FilterBar from "./components/FilterBar";
+import Loading from "./components/Loading";
 
-const LIMIT = 20;
+const LIMIT = 18;
 
 const HomePage = () => {
   const [exercise, setExercise] = useState<Exercise[]>([]);
@@ -61,7 +62,12 @@ const HomePage = () => {
   });
 
   if (loading) {
-    return <h1 className="text-center text-2xl">Loading...</h1>;
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        {/* <h1>Loading...</h1> */}
+        <Loading></Loading>
+      </div>
+    );
   }
 
   if (error) {
@@ -73,55 +79,57 @@ const HomePage = () => {
   }
 
   return (
-    <main className="max-w ">
+    <div>
       <Navbar></Navbar>
-      <div className="flex items-center justify-between m-3 ">
-        <h1 className="text-3xl font-bold">Exercise Tracker</h1>
-        <FilterBar
-          search={search}
-          setSearch={setSearch}
-          selectedMuscle={selectedMuscle}
-          setSelectedMuscle={setSelectedMuscle}
-          muscles={muscles}
-        />
-      </div>
+      <main className="max-w-7xl mx-auto px-8">
+        <div className="flex items-center justify-between mt-2 mb-5 ">
+          <h1 className="text-3xl font-bold">Exercise Tracker</h1>
+          <FilterBar
+            search={search}
+            setSearch={setSearch}
+            selectedMuscle={selectedMuscle}
+            setSelectedMuscle={setSelectedMuscle}
+            muscles={muscles}
+          />
+        </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mx-3">
-        {filteredExercises.map((item) => (
-          <ExerciseCard key={item.id} exercise={item} />
-        ))}
-      </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
+          {filteredExercises.map((item) => (
+            <ExerciseCard key={item.id} exercise={item} />
+          ))}
+        </div>
 
-      <div className="flex items-center justify-center gap-4 mt-10 pb-2">
-        <button
-          disabled={currentPage === 1}
-          onClick={() => setCurrentPage(currentPage - 1)}
-          className={`px-4 py-2 rounded ${
-            currentPage === 1
-              ? "bg-gray-300 cursor-not-allowed"
-              : "bg-blue-900 text-white"
-          }`}
-        >
-          Prev
-        </button>
+        <div className="flex items-center justify-center gap-4 mt-10 pb-2">
+          <button
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage(currentPage - 1)}
+            className={`px-4 py-2 rounded ${
+              currentPage === 1
+                ? "bg-gray-300 cursor-not-allowed"
+                : "bg-blue-900 text-white"
+            }`}
+          >
+            Prev
+          </button>
 
-        <span className="font-semibold">
-          {currentPage} / {totalPages}
-        </span>
+          <span className="font-semibold">
+            {currentPage} / {totalPages}
+          </span>
 
-        <button
-          disabled={currentPage === totalPages}
-          onClick={() => setCurrentPage(currentPage + 1)}
-          className={`px-4 py-2 rounded ${
-            currentPage === totalPages
-              ? "bg-gray-300 cursor-not-allowed"
-              : "bg-blue-900 text-white"
-          }`}
-        >
-          Next
-        </button>
-      </div>
-    </main>
+          <button
+            disabled={currentPage === totalPages}
+            onClick={() => setCurrentPage(currentPage + 1)}
+            className={`px-4 py-2 rounded ${
+              currentPage === totalPages
+                ? "bg-gray-300 cursor-not-allowed"
+                : "bg-blue-900 text-white"
+            }`}
+          >
+            Next
+          </button>
+        </div>
+      </main>
+    </div>
   );
 };
 

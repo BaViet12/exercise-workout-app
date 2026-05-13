@@ -9,6 +9,11 @@ export interface Exercise {
     name: string;
     name_en: string;
   }[];
+  muscles_secondary: {
+    id: number;
+    name: string;
+    name_en: string;
+  }[];
   translations: {
     id: number;
     name: string;
