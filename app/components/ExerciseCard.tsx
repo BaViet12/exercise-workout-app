@@ -43,7 +43,6 @@ const ExerciseCard = ({ exercise }: Props) => {
         <h2 className="line-clamp-2 text-lg font-semibold text-gray-900">
           {name}
         </h2>
-
         <div className="mt-auto flex items-center gap-2">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-100">
             <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />

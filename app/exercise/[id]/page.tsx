@@ -117,7 +117,12 @@ const ExerciseDetailPage = async ({ params }: Props) => {
             </section>
 
             <div className="border-t border-gray-100 pt-6">
-              <ExerciseActions id={exercise.id} name={name} />
+              <ExerciseActions
+                id={exercise.id}
+                name={name}
+                image={imageUrl ?? ""}
+                muscle={exercise.muscles[0]?.name}
+              />
             </div>
           </div>
         </div>

@@ -81,7 +81,7 @@ const HomePage = () => {
   return (
     <div>
       <Navbar></Navbar>
-      <main className="max-w-7xl mx-auto px-8">
+      <main className="max-w-7xl mx-auto px-8 pt-3">
         <div className="flex items-center justify-between mt-2 mb-5 ">
           <h1 className="text-3xl font-bold">Exercise Tracker</h1>
           <FilterBar

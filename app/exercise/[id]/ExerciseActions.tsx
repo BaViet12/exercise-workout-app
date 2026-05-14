@@ -6,31 +6,33 @@ import { useRouter } from "next/navigation";
 type WorkoutItem = {
   id: number;
   name: string;
+  image: string;
+  muscle: string;
 };
 
 type Props = {
   id: number;
   name: string;
+  image: string;
+  muscle: string;
 };
 
 const STORAGE_KEY = "workout";
 
-const ExerciseActions = ({ id, name }: Props) => {
+const ExerciseActions = ({ id, name, image, muscle }: Props) => {
   const router = useRouter();
   const [added, setAdded] = useState(false);
-  // Tải lại khi dữ liệu được thêm
   useEffect(() => {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return;
     const list: WorkoutItem[] = JSON.parse(raw);
     setAdded(list.some((item) => item.id === id));
   }, [id]);
-  // thêm dữ liệu bài tập
   const handleAdd = () => {
     const raw = localStorage.getItem(STORAGE_KEY);
     const list: WorkoutItem[] = raw ? JSON.parse(raw) : [];
     if (list.some((item) => item.id === id)) return;
-    list.push({ id, name });
+    list.push({ id, name, image, muscle });
     localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
     setAdded(true);
   };
